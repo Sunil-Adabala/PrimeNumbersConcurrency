@@ -7,6 +7,15 @@ public class MultiThreadedFair extends Thread {
     AtomicInteger totalPrimes;
     Integer upperLimit;
     Integer numberOfThreads;
+    Double totalExecutionTime;
+
+    public Double getTotalExecutionTime() {
+        return totalExecutionTime;
+    }
+
+    private void setTotalExecutionTime(Double totalExecutionTime) {
+        this.totalExecutionTime = totalExecutionTime;
+    }
 
 
     public MultiThreadedFair(PrimeChecker primeChecker, Integer upperLimit, Integer numberOfThreads) {
@@ -21,9 +30,10 @@ public class MultiThreadedFair extends Thread {
         createThreadsAndRun(this.numberOfThreads);
         long endTime = System.currentTimeMillis();
 
+        setTotalExecutionTime((double)(endTime - startTime)/1000);
 
         System.out.println("Total prime numbers: " + (this.totalPrimes.incrementAndGet()));
-        System.out.println("Total time to find all the prime numbers less than "+this.upperLimit+" using "+numberOfThreads+" thread(s) is -> "+(endTime - startTime)/1000 + " second(s)");
+        System.out.println("Total time to find all the prime numbers less than "+this.upperLimit+" using "+numberOfThreads+" thread(s) is -> "+getTotalExecutionTime()+ " second(s)");
     }
 
     private void createThreadsAndRun(int numberOfThreads) {
@@ -48,7 +58,8 @@ public class MultiThreadedFair extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("Thread " + (i + 1) + " has finished. Total time takes to execute current Thread -> "+((double)(threadEndTime - threadStartTime) / 1000)+" second(s)");
+            double threadExecutionTime = (threadEndTime - threadStartTime)/1000.0;
+            System.out.println("Thread " + (i + 1) + " has finished. Total time takes to execute current Thread -> "+threadExecutionTime+" second(s)");
         }
     }
 
